@@ -1,0 +1,19 @@
+{
+  "name": "com.matheusds365.vscode.yamlsyntax2json",
+  "version": "1.0.4",
+  "description": "Convert YAML TMLanguage syntax with variables to JSON format.",
+  "repository": "https://github.com/matheusdiasdesouzads/vscode-yamlsyntax2json",
+  "main": "index.js",
+  "bin": {
+    "yamlsyntax2json": "bin/yamlsyntax2json"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "matheusdiasdesouzads",
+  "license": "ISC",
+  "dependencies": {
+    "js-yaml": "^4.1.0"
+  }
+}

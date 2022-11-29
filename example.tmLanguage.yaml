@@ -1,0 +1,16 @@
+# tmLanguage
+---
+$schema: https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json
+name: MyLanguageName
+scopeName: source.mylang
+
+variables:
+  someVar: 'xxx'
+
+patterns:
+  - include: '#foo'
+
+repository:
+  foo:
+    begin: '{{someVar}}'
+    patterns: []

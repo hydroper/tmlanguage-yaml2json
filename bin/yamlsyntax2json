@@ -1,0 +1,87 @@
+#!/usr/bin/env node
+const FileSystem = require('fs');
+const Paths = require('path');
+const YAML = require('js-yaml');
+
+class Main {
+    constructor() {
+        this.parsedInput = null;
+        this.variables = new Map;
+        this.output = {};
+    }
+
+    convert(inputPath) {
+        this.parsedInput = YAML.load(FileSystem.readFileSync(Paths.resolve(inputPath), 'utf8'));
+        this.parseVariables();
+        this.output['$schema'] = this.parsedInput['$schema'];
+        this.output['name'] = this.parsedInput['name'];
+        this.output['scopeName'] = this.parsedInput['scopeName'];
+        if (this.parsedInput['fileTypes'] instanceof Array)
+            this.output['fileTypes'] = this.parsedInput['fileTypes'];
+        if (typeof this.parsedInput['foldingStartMarker'] == 'string')
+            this.output['foldingStartMarker'] = this.applyRegExpVariables(this.parsedInput['foldingStartMarker']);
+        if (typeof this.parsedInput['foldingStopMarker'] == 'string')
+            this.output['foldingStopMarker'] = this.applyRegExpVariables(this.parsedInput['foldingStopMarker']);
+        let origRules = this.parsedInput['patterns'];
+        this.output['patterns'] = origRules instanceof Array ? origRules.map(p => this.parseRule(p)) : null;
+        let origRepository = this.parsedInput['repository'];
+        this.output['repository'] = typeof origRepository == 'object' ? this.parseRepository(origRepository) : {};
+        return JSON.stringify(this.output, null, 4);
+    }
+
+    parseVariables() {
+        const vars = this.parsedInput.variables;
+        for (let name in vars) {
+            this.variables.set(name, this.applyRegExpVariables(String(vars[name])));
+        }
+    }
+
+    parseRepository(orig) {
+        let r = {};
+        for (let k in orig) {
+            let origR = orig[k];
+            if (typeof origR != 'object') {
+                continue;
+            }
+            r[k] = this.parseRule(origR);
+        }
+        return r;
+    }
+
+    parseRule(orig) {
+        let r = {
+            ['name']: orig.name,
+        };
+        if (typeof orig['match'] == 'string') r['match'] = this.applyRegExpVariables(orig['match']);
+        if (typeof orig['begin'] == 'string') r['begin'] = this.applyRegExpVariables(orig['begin']);
+        if (typeof orig['end'] == 'string') r['end'] = this.applyRegExpVariables(orig['end']);
+        if (orig['patterns'] instanceof Array) r['patterns'] = orig['patterns'].map(r => this.parseRule(r));
+        if (typeof orig['contentName'] == 'string') r['contentName'] = orig['contentName'];
+        if (typeof orig['include'] == 'string') r['include'] = orig['include'];
+        if (orig['captures'] instanceof Array) r['captures'] = orig['captures'];
+        if (orig['beginCaptures'] instanceof Array) r['beginCaptures'] = orig['beginCaptures'];
+        if (orig['endCaptures'] instanceof Array) r['endCaptures'] = orig['endCaptures'];
+        return r;
+    }
+
+    applyRegExpVariables(r) {
+        return r.replace(/\{\{([a-zA-Z0-9_\-\$]+)\}\}/g, (_, s) => {
+            let replacement = this.variables.get(s);
+            if (replacement === undefined) {
+                console.error('Undefined variable: ${s}');
+                replacement = '';
+            }
+            return replacement;
+        });
+    }
+}
+
+const [inputPath, outputPath] = process.argv.slice(2);
+
+if (!inputPath || !outputPath) {
+    console.error('Expected 2 arguments.');
+} else {
+    let resultJson = (new Main).convert(inputPath, outputPath);
+    FileSystem.writeFileSync(Paths.resolve(outputPath), resultJson);
+    console.log(`JSON successfuly written to ${Paths.resolve(outputPath)}.`);
+}
