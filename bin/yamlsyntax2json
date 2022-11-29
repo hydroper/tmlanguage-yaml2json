@@ -22,6 +22,8 @@ class Main {
             this.output['foldingStartMarker'] = this.applyRegExpVariables(this.parsedInput['foldingStartMarker']);
         if (typeof this.parsedInput['foldingStopMarker'] == 'string')
             this.output['foldingStopMarker'] = this.applyRegExpVariables(this.parsedInput['foldingStopMarker']);
+        if (typeof this.parsedInput['firstLineMatch'] == 'string')
+            this.output['firstLineMatch'] = this.applyRegExpVariables(this.parsedInput['firstLineMatch']);
         let origRules = this.parsedInput['patterns'];
         this.output['patterns'] = origRules instanceof Array ? origRules.map(p => this.parseRule(p)) : null;
         let origRepository = this.parsedInput['repository'];
