@@ -1,14 +1,16 @@
-# com.matheusds365.vscode.yamlsyntax2json
+# tmlanguage-yaml2json
 
-Command to convert a YAML form of TMLanguage to JSON.
+Convert a tmLanguage written in YAML to JSON.
 
-It supports variable replacement using the `{{variableName}}` syntax.
+Features:
+
+- Variable replacement using the `{{variableName}}` syntax.
 
 ## Usage
 
 Install with:
 
-```
+```sh
 npm i -g com.matheusds365.vscode.yamlsyntax2json
 ```
 
