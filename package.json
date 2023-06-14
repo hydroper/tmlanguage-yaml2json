@@ -1,5 +1,5 @@
 {
-  "name": "com.matheusds365.vscode.yamlsyntax2json",
+  "name": "com.hydroper.tmlanguage.yamlsyntax2json",
   "version": "1.0.6",
   "description": "Convert YAML TMLanguage syntax with variables to JSON format.",
   "repository": "https://github.com/matheusdiasdesouzads/vscode-yamlsyntax2json",
@@ -11,7 +11,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "matheusdiasdesouzads",
+  "author": "hydroper",
   "license": "ISC",
   "dependencies": {
     "js-yaml": "^4.1.0"
