@@ -60,9 +60,9 @@ class Main {
         if (orig['patterns'] instanceof Array) r['patterns'] = orig['patterns'].map(r => this.parseRule(r));
         if (typeof orig['contentName'] == 'string') r['contentName'] = orig['contentName'];
         if (typeof orig['include'] == 'string') r['include'] = orig['include'];
-        if (orig['captures'] instanceof Array) r['captures'] = orig['captures'];
-        if (orig['beginCaptures'] instanceof Array) r['beginCaptures'] = orig['beginCaptures'];
-        if (orig['endCaptures'] instanceof Array) r['endCaptures'] = orig['endCaptures'];
+        if (typeof orig['captures'] == 'object') r['captures'] = orig['captures'];
+        if (typeof orig['beginCaptures'] == 'object') r['beginCaptures'] = orig['beginCaptures'];
+        if (typeof orig['endCaptures'] == 'object') r['endCaptures'] = orig['endCaptures'];
         return r;
     }
 
