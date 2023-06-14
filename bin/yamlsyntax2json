@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const FileSystem = require('fs');
+const File = require('fs');
 const Paths = require('path');
 const YAML = require('js-yaml');
 
@@ -11,7 +11,7 @@ class Main {
     }
 
     convert(inputPath) {
-        this.parsedInput = YAML.load(FileSystem.readFileSync(Paths.resolve(inputPath), 'utf8'));
+        this.parsedInput = YAML.load(File.readFileSync(Paths.resolve(inputPath), 'utf8'));
         this.parseVariables();
         this.output['$schema'] = this.parsedInput['$schema'];
         this.output['name'] = this.parsedInput['name'];
@@ -83,7 +83,7 @@ const [inputPath, outputPath] = process.argv.slice(2);
 if (!inputPath || !outputPath) {
     console.error('Expected 2 arguments.');
 } else {
-    let resultJson = (new Main).convert(inputPath, outputPath);
-    FileSystem.writeFileSync(Paths.resolve(outputPath), resultJson);
+    let resultJson = new Main().convert(inputPath, outputPath);
+    File.writeFileSync(Paths.resolve(outputPath), resultJson);
     console.log(`JSON successfuly written to ${Paths.resolve(outputPath)}.`);
 }
