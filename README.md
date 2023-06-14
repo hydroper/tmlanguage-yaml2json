@@ -11,7 +11,7 @@ Features:
 Install with:
 
 ```sh
-npm i -g com.matheusds365.vscode.yamlsyntax2json
+npm i -g com.hydroper.tmlanguage.yamlsyntax2json
 ```
 
 Write a file `mylanguage.tmLanguage.yaml`:
