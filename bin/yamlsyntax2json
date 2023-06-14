@@ -70,7 +70,7 @@ class Main {
         return r.replace(/\{\{([a-zA-Z0-9_\-\$]+)\}\}/g, (_, s) => {
             let replacement = this.variables.get(s);
             if (replacement === undefined) {
-                console.error('Undefined variable: ${s}');
+                console.error(`Undefined variable: ${s}`);
                 replacement = '';
             }
             return replacement;
